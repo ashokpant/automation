@@ -1,32 +1,37 @@
-package com.deepsenselab.automation.ieltsregister;
+package com.deepsenselab.automation;
 
-import com.deepsenselab.automation.WholeSuiteListener;
+import com.deepsenselab.automation.ieltsregister.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.seleniumhq.selenium.fluent.FluentWebElement;
 import org.seleniumhq.selenium.fluent.Monitor;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
-import static org.junit.Assert.assertThat;
+import java.util.concurrent.TimeUnit;
 
 public class RegisterIeltsTest {
     private WebDriver wd;
+    WebDriverWait wait;
     private Monitor.Timer bizOperationTiming;
     private int claimedUnitedPrice;
     private String hipmunkWindowHandle;
+    double time= 0;
 
     @Before
     public void makeWebDriverAndGotoSite() {
         System.setProperty("webdriver.chrome.driver","/home/ashok/Projects/ashok/automation/automation/lib/chromedriver");
 
-        /*HashMap<String, Object> prefs = new HashMap<String, Object>();
-        prefs.put("profile.managed_default_content_settings.images", 2);
+        HashMap<String, Object> prefs = new HashMap<String, Object>();
+        prefs.put("profile.managed_default_content_settings.images", 1);
 
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", prefs);
@@ -34,15 +39,17 @@ public class RegisterIeltsTest {
         DesiredCapabilities chromeCaps = DesiredCapabilities.chrome();
         chromeCaps.setCapability(ChromeOptions.CAPABILITY, options);
 
-        wd = new ChromeDriver(chromeCaps);*/
-
-        wd = new ChromeDriver();
+        wd = new ChromeDriver(chromeCaps);
+        time = System.currentTimeMillis();
+        //wd = new ChromeDriver();
+        wd.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         wd.get("https://ielts.britishcouncil.org/Default.aspx");
     }
 
     @After
     public void killWebDriver() {
         try {
+            System.out.println("Total time: "+((System.currentTimeMillis()-time)/1000)+ " secs.");
             Thread.sleep(120000);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -55,6 +62,8 @@ public class RegisterIeltsTest {
         CandidateDetails candidate = Fun.getCandidateDetails();
         new DefaultPage(wd) {{
             yourCountryField().sendKeys(candidate.getBookingCountry());
+            System.out.println("Booking country: "+candidate.getBookingCountry());
+            System.out.println("Continue...");
             continueField().click();
         }};
 
@@ -62,21 +71,26 @@ public class RegisterIeltsTest {
             String date = candidate.getBookingDate(); //01/08/216
             String townCity = candidate.getBookingTown();
             String module = candidate.getBookingModule();
+
             dateField().sendKeys(date);
             townField().sendKeys(townCity);
             moduleField().sendKeys(module);
+            System.out.println("Booking month: "+date);
+            System.out.println("Booking city: "+townCity);
+            System.out.println("Booking module: "+module);
+            System.out.println("Continue...");
             findField().click();
         }};
 
         new CheckAvailabilityPage(wd){{
             String date = candidate.getBookingExactDate();//"27 August 2016";
-
-            System.out.println("header: "+headerField().getText());
+            System.out.println("Booking date: "+date);
+            //System.out.println("header: "+headerField().getText());
             List<FluentWebElement> rows = rowsField();
 
             for(FluentWebElement row : rows) {
                 System.out.println(row.divs().get(0).getText().toString()+ " : "+row.divs().get(3).getText().toString());
-                if((Objects.equals(row.divs().get(0).getText().toString(), date)) && (Objects.equals(row.divs().get(3).getText().toString(), "Available"))){
+                if((Objects.equals(row.divs().get(0).getText().toString(), date)) && (row.divs().get(3).getText().toString().contains("Available"))){
                     System.out.println("Found date, applying!!!");
                     row.divs().get(4).click();
                     break;
@@ -89,11 +103,12 @@ public class RegisterIeltsTest {
             agreeField().click();
             System.out.println("Term and conditions accepted.");
 
-            continueField().click();
             System.out.println("Continue...");
+            continueField().click();
         }};
 
         new CandidateDetailsPage(wd){{
+            System.out.println("Filling candidate details...");
             titleField().sendKeys(candidate.getTitle());
             firstNameField().sendKeys(candidate.getFirstName());
             lastNameField().sendKeys(candidate.getLastName());
@@ -119,6 +134,7 @@ public class RegisterIeltsTest {
             destinationCountryField().sendKeys(candidate.getDestinationCountry());
             educationLabelField().sendKeys(candidate.getEducationLabel());
             englishStudyYearsField().sendKeys(candidate.getEnglishStudyYears());
+            System.out.println("Continue...");
             continueField().click();
         }};
 
@@ -126,7 +142,8 @@ public class RegisterIeltsTest {
             if(candidate.getBookingCountry().equals("India")){
                 paymentMethodField().sendKeys("Pay Later - using an alternative payment method"); //other option is "Pay Now - using Credit/Debit Card"}
             }
-            applyNowField().click();
+            //applyNowField().click();
+            System.out.println("Done.");
         }};
 
     }

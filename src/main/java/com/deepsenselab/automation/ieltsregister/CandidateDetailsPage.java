@@ -31,8 +31,8 @@ public class CandidateDetailsPage extends BasePage {
     protected FluentWebElement identificationDocExpiryDayField(){return select(id("ctl00_ContentPlaceHolder1_ddlDocIdDay"));}
     protected FluentWebElement identificationDocExpiryMonthField(){return select(id("ctl00_ContentPlaceHolder1_ddlDocIdMonth"));}
     protected FluentWebElement identificationDocExpiryYearField(){return select(id("ctl00_ContentPlaceHolder1_ddlDocIdYear"));}
-    protected FluentWebElement genderMaleField(){return input(id("ctl00_ContentPlaceHolder1_radGenderMale"));}
-    protected FluentWebElement genderFemaleField(){return input(id("ctl00_ContentPlaceHolder1_radGenderFemale"));}
+    protected FluentWebElement genderMaleField(){return element(id("ctl00_ContentPlaceHolder1_radGenderMale"));}
+    protected FluentWebElement genderFemaleField(){return element(id("ctl00_ContentPlaceHolder1_radGenderFemale"));}
     protected FluentWebElement addressField(){return input(id("ctl00_ContentPlaceHolder1_txtAddr1"));}
     protected FluentWebElement countryField(){return select(id("ctl00_ContentPlaceHolder1_ddlAddrCountry"));}
     protected FluentWebElement occupationSectorField(){return select(id("ctl00_ContentPlaceHolder1_ddlOccupationSector"));}

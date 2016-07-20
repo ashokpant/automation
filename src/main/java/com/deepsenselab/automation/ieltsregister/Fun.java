@@ -6,15 +6,15 @@ package com.deepsenselab.automation.ieltsregister;
 public class Fun {
     public static CandidateDetails getCandidateDetails(){
         CandidateDetails details = new CandidateDetails();
-        details.setBookingCountry("Nepal");
+        details.setBookingCountry("India");
         details.setBookingDate("01/08/2016"); //August 2016
         details.setBookingExactDate("27 August 2016");
-        details.setBookingTown("Kathmandu");
+        details.setBookingTown("Delhi");
         details.setBookingModule("Academic");
 
         details.setTitle("Mr");
-        details.setFirstName("Ashok");
-        details.setLastName("Pant");
+        details.setFirstName("Test");
+        details.setLastName("Test");
         details.setFirstLanguage("Nepali");
         details.setNationality("Nepal");
         details.setEmail("ashokpant87@gmail.com");
@@ -22,11 +22,11 @@ public class Fun {
         details.setBirthMonth("April");
         details.setBirthYear("1987");
         details.setIdentificationDoc("Passport");
-        details.setIdentificationDocNumber("123456");
+        details.setIdentificationDocNumber("1234526");
         details.setIdentificationDocExpiryDay("21");
         details.setIdentificationDocExpiryMonth("November");
         details.setIdentificationDocExpiryYear("2025");
-        details.setGender("Male");
+        details.setGender("Female");
         details.setAddress("Kathmandu, Nepal");
         details.setCountry("Nepal");
         details.setOccupationSector("Education");

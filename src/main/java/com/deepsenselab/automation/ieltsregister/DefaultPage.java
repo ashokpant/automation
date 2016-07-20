@@ -12,11 +12,7 @@ public class DefaultPage extends BasePage {
         url().shouldMatch(".*ielts.britishcouncil.org/Default.aspx");
     }
 
-    protected FluentWebElement yourCountryField(){
-        return select(id("ctl00_ContentPlaceHolder1_ddlCountry"));
-    }
-    protected FluentWebElement continueField(){
-        return element(id("ctl00_ContentPlaceHolder1_imgbRegisterBtn"));
-    }
+    protected FluentWebElement yourCountryField(){return  select(id("ctl00_ContentPlaceHolder1_ddlCountry"));}
+    protected FluentWebElement continueField(){ return element(id("ctl00_ContentPlaceHolder1_imgbRegisterBtn")); }
 
 }
