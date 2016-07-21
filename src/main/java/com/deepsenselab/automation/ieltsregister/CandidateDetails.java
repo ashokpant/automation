@@ -256,4 +256,40 @@ public class CandidateDetails {
     public void setEnglishStudyYears(String englishStudyYears) {
         this.englishStudyYears = englishStudyYears;
     }
+
+    public String toString(String sep){
+        return "[bookingCountry: " +this.bookingCountry+sep+
+                "bookingDate: " +this.bookingDate+sep+
+                "bookingExactDate: " +this.bookingExactDate+sep+
+                "bookingTown: " +this.bookingTown+sep+
+                "bookingModule: " +this.bookingModule+sep+
+                "title: " +this.title+sep+
+                "firstName: " +this.firstName+sep+
+                "lastName: " +this.lastName+sep+
+                "firstLanguage: " +this.firstLanguage+sep+
+                "nationality: " +this.nationality+sep+
+                "email: " +this.email+sep+
+                "birthDay: " +this.birthDay+sep+
+                "birthMonth: " +this.birthMonth+sep+
+                "birthYear: " +this.birthYear+sep+
+                "identificationDoc: " +this.identificationDoc+sep+
+                "identificationDocNumber: " +this.identificationDocNumber+sep+
+                "identificationDocExpiryDay: " +this.identificationDocExpiryDay+sep+
+                "identificationDocExpiryMonth: " +this.identificationDocExpiryMonth+sep+
+                "identificationDocExpiryYear: " +this.identificationDocExpiryYear+sep+
+                "gender: " +this.gender+sep+
+                "address: " +this.address+sep+
+                "country: " +this.country+sep+
+                "occupationSector: " +this.occupationSector+sep+
+                "occupationStatus: " +this.occupationStatus+sep+
+                "reasonForTest: " +this.reasonForTest+sep+
+                "destinationCountry: " +this.destinationCountry+sep+
+                "educationLabel: " +this.educationLabel+sep+
+                "englishStudyYears: "+this.englishStudyYears+"]";
+    }
+
+    public String toString(){
+        String sep = ", ";
+        return toString(sep);
+    }
 }
