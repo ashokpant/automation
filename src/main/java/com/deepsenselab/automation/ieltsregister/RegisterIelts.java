@@ -1,9 +1,14 @@
 package com.deepsenselab.automation.ieltsregister;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.seleniumhq.selenium.fluent.FluentWebElement;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -38,8 +43,7 @@ public class RegisterIelts {
         }
         wd.quit();
     }
-
-    public void register(CandidateDetails candidate) {
+    public double registerCore(CandidateDetails candidate){
         makeWebDriverAndGotoSite();
 
         new DefaultPage(wd) {{
@@ -50,7 +54,7 @@ public class RegisterIelts {
         }};
 
         new FindTestDatePage(wd){{
-            String date = candidate.getBookingDate(); //01/08/216
+            String date = candidate.getBookingDate();
             String townCity = candidate.getBookingTown();
             String module = candidate.getBookingModule();
 
@@ -116,6 +120,35 @@ public class RegisterIelts {
             destinationCountryField().sendKeys(candidate.getDestinationCountry());
             educationLabelField().sendKeys(candidate.getEducationLabel());
             englishStudyYearsField().sendKeys(candidate.getEnglishStudyYears());
+            if(isElementPresent(By.id("ctl00_ContentPlaceHolder1_divIsEnabledRecapsha"))){
+                wd.switchTo().defaultContent();
+                wd.switchTo().frame(0);
+
+                if(isElementPresent(By.id("recaptcha-anchor"))){
+                    System.out.println("Verify captcha.");
+                    WebElement captchaCheckBox =  wd.findElement(By.id("recaptcha-anchor"));
+                    captchaCheckBox.click();
+
+                    WebDriverWait wait = new WebDriverWait(wd,300,2000);
+
+                    wait.until(new ExpectedCondition<Boolean>() {
+                        public Boolean apply(WebDriver driver) {
+                            WebElement span =  driver.findElement(By.id("recaptcha-anchor"));
+                            String enabled = span.getAttribute("aria-checked");
+                            if(enabled.equals("true")){
+                                System.out.println("Captcha verified!");
+                                return true;
+                            }else{
+                                return false;
+                            }
+                        }
+                    });
+                }
+                wd.switchTo().defaultContent();
+            }else{
+                System.out.println("Captcha not present.");
+            }
+
             System.out.println("Continue...");
             continueField().click();
         }};
@@ -127,13 +160,29 @@ public class RegisterIelts {
             //applyNowField().click();
             System.out.println("Done.");
         }};
+        double t = ((System.currentTimeMillis()-time)/1000);
+        return t;
+    }
 
+    public void register(CandidateDetails candidate) {
+       registerCore(candidate);
         killWebDriver();
     }
 
     public static void main(String[] args) {
-        CandidateDetails candidate = Fun.getCandidateDetails();
+        String excelFilePath = "/home/ashok/Projects/ashok/automation/automation/data/candidates.xlsx";
+        IO reader = new IO();
+        List<CandidateDetails> candidates = null;
         RegisterIelts registerIelts = new RegisterIelts();
-        registerIelts.register(candidate);
+        try {
+            candidates = reader.readCandidateDetailsFromExcelFile(excelFilePath);
+            for(int i = 1; i <candidates.size(); ++i){
+                CandidateDetails candidate = candidates.get(i);
+                registerIelts.register(candidate);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

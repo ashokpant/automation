@@ -4,10 +4,13 @@ import com.deepsenselab.automation.ieltsregister.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.seleniumhq.selenium.fluent.FluentWebElement;
 import org.seleniumhq.selenium.fluent.Monitor;
@@ -134,6 +137,36 @@ public class RegisterIeltsTest {
             destinationCountryField().sendKeys(candidate.getDestinationCountry());
             educationLabelField().sendKeys(candidate.getEducationLabel());
             englishStudyYearsField().sendKeys(candidate.getEnglishStudyYears());
+
+            if(isElementPresent(By.id("ctl00_ContentPlaceHolder1_divIsEnabledRecapsha"))){
+                wd.switchTo().defaultContent();
+                wd.switchTo().frame(0);
+
+                if(isElementPresent(By.id("recaptcha-anchor"))){
+                    System.out.println("Verify captcha.");
+                    WebElement captchaCheckBox =  wd.findElement(By.id("recaptcha-anchor"));
+                    captchaCheckBox.click();
+
+                    WebDriverWait wait = new WebDriverWait(wd,300,2000);
+
+                    wait.until(new ExpectedCondition<Boolean>() {
+                        public Boolean apply(WebDriver driver) {
+                            WebElement span =  driver.findElement(By.id("recaptcha-anchor"));
+                            String enabled = span.getAttribute("aria-checked");
+                            if(enabled.equals("true")){
+                                System.out.println("Captcha verified!");
+                                return true;
+                            }else{
+                                return false;
+                            }
+                        }
+                    });
+                }
+                wd.switchTo().defaultContent();
+            }else{
+                System.out.println("Captcha not present.");
+            }
+
             System.out.println("Continue...");
             continueField().click();
         }};

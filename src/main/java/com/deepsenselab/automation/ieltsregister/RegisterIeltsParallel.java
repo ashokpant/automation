@@ -1,43 +1,45 @@
 package com.deepsenselab.automation.ieltsregister;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.seleniumhq.selenium.fluent.FluentWebElement;
-
+import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class RegisterIeltsParallel implements Runnable {
-    CandidateDetails candidate;
-
+    CandidateDetails candidate = null;
     public RegisterIeltsParallel(CandidateDetails candidate) {
         this.candidate = candidate;
-    }
-
-    public static void main(String[] args) {
-        CandidateDetails candidate = Fun.getCandidateDetails();
-
-        Runnable job1 = new RegisterIeltsParallel(candidate);
-        Thread job1Thread = new Thread(job1);
-        job1Thread.start();
-
-        Runnable job2 = new RegisterIeltsParallel(candidate);
-        Thread job2Thread = new Thread(job2);
-        job2Thread.start();
-
-        Runnable job3 = new RegisterIeltsParallel(candidate);
-        Thread job3Thread = new Thread(job3);
-        job3Thread.start();
-
-        Runnable job4 = new RegisterIeltsParallel(candidate);
-        Thread job4Thread = new Thread(job4);
-        job4Thread.start();
     }
 
     @Override
     public void run() {
         RegisterIelts registerIelts = new RegisterIelts();
-        registerIelts.register(candidate);
+        System.out.println("candidate in run: "+this.candidate.toString(", "));
+        registerIelts.registerCore(candidate);
+        registerIelts.killWebDriver();
     }
+
+    public static void main(String[] args) {
+        String excelFilePath = "/home/ashok/Projects/ashok/automation/automation/data/candidates.xlsx";
+        int numOfThreads = 3;
+
+        try {
+            IO reader = new IO();
+            List<CandidateDetails> candidates = reader.readCandidateDetailsFromExcelFile(excelFilePath);
+            for(int i = 1; i <candidates.size(); i = i+numOfThreads){
+                for(int j=i; j < Math.min(i+numOfThreads,candidates.size()); ++j){
+                    System.out.println("candidate: "+j);
+                    CandidateDetails candidate = candidates.get(j);
+                    System.out.println("\t"+candidate.toString(","));
+                    Runnable job = new RegisterIeltsParallel(candidate);
+                    Thread thread = new Thread(job);
+                    thread.start();
+                }
+                System.out.println("---");
+                Thread.sleep(60000);
+            }
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

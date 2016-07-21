@@ -14,9 +14,7 @@ public class FindTestDatePage extends BasePage {
         url().within(Period.secs(3)).shouldContain("CountryExamSearch");
     }
 
-    protected FluentWebElement dateField(){
-        return select(id("ctl00_ContentPlaceHolder1_ddlDateMonthYear"));
-    }
+    protected FluentWebElement dateField(){return select(id("ctl00_ContentPlaceHolder1_ddlDateMonthYear"));}
     protected FluentWebElement townField(){
         return select(id("ctl00_ContentPlaceHolder1_ddlTownCityVenue"));
     }

@@ -7,7 +7,7 @@ public class Fun {
     public static CandidateDetails getCandidateDetails(){
         CandidateDetails details = new CandidateDetails();
         details.setBookingCountry("India");
-        details.setBookingDate("01/08/2016"); //August 2016
+        details.setBookingDate("August 2016");
         details.setBookingExactDate("27 August 2016");
         details.setBookingTown("Delhi");
         details.setBookingModule("Academic");

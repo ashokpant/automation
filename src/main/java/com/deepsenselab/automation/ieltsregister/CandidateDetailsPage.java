@@ -1,10 +1,13 @@
 package com.deepsenselab.automation.ieltsregister;
 
 import com.deepsenselab.automation.BasePage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.seleniumhq.selenium.fluent.FluentWebElement;
 import org.seleniumhq.selenium.fluent.Period;
 
+import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.By.id;
 
 public class CandidateDetailsPage extends BasePage {
@@ -41,6 +44,48 @@ public class CandidateDetailsPage extends BasePage {
     protected FluentWebElement destinationCountryField(){return select(id("ctl00_ContentPlaceHolder1_ddlDestinationCountry"));}
     protected FluentWebElement educationLabelField(){return select(id("ctl00_ContentPlaceHolder1_ddlEducationLevel"));}
     protected FluentWebElement englishStudyYearsField(){return select(id("ctl00_ContentPlaceHolder1_ddlEnglishStudyInYears"));}
+    protected FluentWebElement captchaField(){return element(className("recaptcha-checkbox-checkmark"));}
     protected FluentWebElement continueField(){return element(id("ctl00_ContentPlaceHolder1_ibtnContinue"));}
 
+    public boolean isElementPresent(By by){
+        try {
+            if(element(by).isDisplayed().value()) return true;
+        }
+        catch (org.openqa.selenium.NoSuchElementException e){
+            return false;
+        }
+        return false;
+    }
+
+  /*  To check Element Present:
+
+            if(driver.findElements(By.xpath("value")).size() != 0){
+        System.out.println("Element is Present");
+    }else{
+        System.out.println("Element is Absent");
+    }
+    Or
+if(driver.findElement(By.xpath("value"))!= null){
+        System.out.println("Element is Present");
+    }else{
+        System.out.println("Element is Absent");
+    }
+    To check Visible:
+            if( driver.findElement(By.cssSelector("a > font")).isDisplayed()){
+        System.out.println("Element is Visible");
+    }else{
+        System.out.println("Element is InVisible");
+    }
+    To check Enable:
+            if( driver.findElement(By.cssSelector("a > font")).isEnabled()){
+        System.out.println("Element is Enable");
+    }else{
+        System.out.println("Element is Disabled");
+    }
+    To check text present
+if(driver.getPageSource().contains("Text to check")){
+        System.out.println("Text is present");
+    }else{
+        System.out.println("Text is absent");
+    }*/
 }
