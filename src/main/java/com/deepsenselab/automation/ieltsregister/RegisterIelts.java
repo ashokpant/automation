@@ -120,35 +120,7 @@ public class RegisterIelts {
             destinationCountryField().sendKeys(candidate.getDestinationCountry());
             educationLabelField().sendKeys(candidate.getEducationLabel());
             englishStudyYearsField().sendKeys(candidate.getEnglishStudyYears());
-            if(isElementPresent(By.id("ctl00_ContentPlaceHolder1_divIsEnabledRecapsha"))){
-                wd.switchTo().defaultContent();
-                wd.switchTo().frame(0);
-
-                if(isElementPresent(By.id("recaptcha-anchor"))){
-                    System.out.println("Verify captcha.");
-                    WebElement captchaCheckBox =  wd.findElement(By.id("recaptcha-anchor"));
-                    captchaCheckBox.click();
-
-                    WebDriverWait wait = new WebDriverWait(wd,300,2000);
-
-                    wait.until(new ExpectedCondition<Boolean>() {
-                        public Boolean apply(WebDriver driver) {
-                            WebElement span =  driver.findElement(By.id("recaptcha-anchor"));
-                            String enabled = span.getAttribute("aria-checked");
-                            if(enabled.equals("true")){
-                                System.out.println("Captcha verified!");
-                                return true;
-                            }else{
-                                return false;
-                            }
-                        }
-                    });
-                }
-                wd.switchTo().defaultContent();
-            }else{
-                System.out.println("Captcha not present.");
-            }
-
+            verifyCaptchaIfPresent();
             System.out.println("Continue...");
             continueField().click();
         }};

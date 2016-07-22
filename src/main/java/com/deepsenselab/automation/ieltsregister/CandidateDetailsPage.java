@@ -2,12 +2,13 @@ package com.deepsenselab.automation.ieltsregister;
 
 import com.deepsenselab.automation.BasePage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.seleniumhq.selenium.fluent.FluentWebElement;
 import org.seleniumhq.selenium.fluent.Period;
 
-import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.By.id;
 
 public class CandidateDetailsPage extends BasePage {
@@ -44,48 +45,39 @@ public class CandidateDetailsPage extends BasePage {
     protected FluentWebElement destinationCountryField(){return select(id("ctl00_ContentPlaceHolder1_ddlDestinationCountry"));}
     protected FluentWebElement educationLabelField(){return select(id("ctl00_ContentPlaceHolder1_ddlEducationLevel"));}
     protected FluentWebElement englishStudyYearsField(){return select(id("ctl00_ContentPlaceHolder1_ddlEnglishStudyInYears"));}
-    protected FluentWebElement captchaField(){return element(className("recaptcha-checkbox-checkmark"));}
     protected FluentWebElement continueField(){return element(id("ctl00_ContentPlaceHolder1_ibtnContinue"));}
 
-    public boolean isElementPresent(By by){
-        try {
-            if(element(by).isDisplayed().value()) return true;
-        }
-        catch (org.openqa.selenium.NoSuchElementException e){
-            return false;
-        }
-        return false;
-    }
+    final String CAPTCHA_DIV_ID= "ctl00_ContentPlaceHolder1_divIsEnabledRecapsha";
+    final String CAPTCHA_CHECKBOX_ID= "recaptcha-anchor";
+    int maxWaitSeconds = 600;
+    void verifyCaptchaIfPresent() {
+        if (isElementPresent(By.id(CAPTCHA_DIV_ID))) {
+            delegate.switchTo().defaultContent();
+            delegate.switchTo().frame(0);
 
-  /*  To check Element Present:
+            if (isElementPresent(By.id(CAPTCHA_CHECKBOX_ID))) {
+                System.out.println("Verify captcha.");
+                WebElement captchaCheckBox = delegate.findElement(By.id(CAPTCHA_CHECKBOX_ID));
+                captchaCheckBox.click();
 
-            if(driver.findElements(By.xpath("value")).size() != 0){
-        System.out.println("Element is Present");
-    }else{
-        System.out.println("Element is Absent");
+                WebDriverWait wait = new WebDriverWait(delegate, maxWaitSeconds, 2000);
+
+                wait.until(new ExpectedCondition<Boolean>() {
+                    public Boolean apply(WebDriver driver) {
+                        WebElement span = driver.findElement(By.id(CAPTCHA_CHECKBOX_ID));
+                        String enabled = span.getAttribute("aria-checked");
+                        if (enabled.equals("true")) {
+                            System.out.println("Captcha verified!");
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                });
+            }
+            delegate.switchTo().defaultContent();
+        } else {
+            System.out.println("Captcha not present.");
+        }
     }
-    Or
-if(driver.findElement(By.xpath("value"))!= null){
-        System.out.println("Element is Present");
-    }else{
-        System.out.println("Element is Absent");
-    }
-    To check Visible:
-            if( driver.findElement(By.cssSelector("a > font")).isDisplayed()){
-        System.out.println("Element is Visible");
-    }else{
-        System.out.println("Element is InVisible");
-    }
-    To check Enable:
-            if( driver.findElement(By.cssSelector("a > font")).isEnabled()){
-        System.out.println("Element is Enable");
-    }else{
-        System.out.println("Element is Disabled");
-    }
-    To check text present
-if(driver.getPageSource().contains("Text to check")){
-        System.out.println("Text is present");
-    }else{
-        System.out.println("Text is absent");
-    }*/
 }
