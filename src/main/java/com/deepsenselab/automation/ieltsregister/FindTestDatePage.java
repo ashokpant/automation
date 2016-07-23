@@ -10,7 +10,6 @@ import static org.openqa.selenium.By.id;
 public class FindTestDatePage extends BasePage {
     public FindTestDatePage(WebDriver delegate) {
         super(delegate);
-        System.out.println("url: "+url().toString());
         url().within(Period.secs(3)).shouldContain("CountryExamSearch");
     }
 

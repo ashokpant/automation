@@ -1,20 +1,21 @@
 package com.deepsenselab.automation.ieltsregister;
 
+import org.monte.screenrecorder.ScreenRecorder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.seleniumhq.selenium.fluent.FluentWebElement;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class RegisterIelts {
     private WebDriver wd = null;
+    ScreenRecorder screenRecorder = null;
     double time= 0;
 
     public void makeWebDriverAndGotoSite() {
@@ -32,18 +33,45 @@ public class RegisterIelts {
         wd = new ChromeDriver();
         wd.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         wd.get("https://ielts.britishcouncil.org/Default.aspx");
+
+
+      /*  //Create a instance of GraphicsConfiguration to get the Graphics configuration
+        //of the Screen. This is needed for ScreenRecorder class.
+        GraphicsConfiguration gc = GraphicsEnvironment//
+                .getLocalGraphicsEnvironment()//
+                .getDefaultScreenDevice()//
+                .getDefaultConfiguration();
+
+        //Create a instance of ScreenRecorder with the required configurations
+        try {
+            screenRecorder = new ScreenRecorder(gc,
+                    new Format(MediaTypeKey, MediaType.FILE, MimeTypeKey, MIME_AVI),
+                    new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
+                            VideoFormatKeys.CompressorNameKey, VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
+                            VideoFormatKeys.DepthKey, (int)24, FrameRateKey, Rational.valueOf(15),
+                            VideoFormatKeys.QualityKey, 1.0f,
+                            KeyFrameIntervalKey, (int) (15 * 60)),
+                    new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey,"black",
+                            FrameRateKey, Rational.valueOf(30)),
+                    null);
+            screenRecorder.start();
+        } catch (IOException | AWTException e) {
+            e.printStackTrace();
+        }*/
     }
 
     public void killWebDriver() {
         try {
             System.out.println("Total time: "+((System.currentTimeMillis()-time)/1000)+ " secs.");
             Thread.sleep(120000);
+            wd.quit();
+            //screenRecorder.stop();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        wd.quit();
+
     }
-    public double registerCore(CandidateDetails candidate){
+    public double registerCore(CandidateDetails candidate) {
         makeWebDriverAndGotoSite();
 
         new DefaultPage(wd) {{
@@ -72,18 +100,45 @@ public class RegisterIelts {
             String date = candidate.getBookingExactDate();//"27 August 2016";
             System.out.println("Booking date: "+date);
             //System.out.println("header: "+headerField().getText());
-            List<FluentWebElement> rows = rowsField();
 
-            for(FluentWebElement row : rows) {
-                System.out.println(row.divs().get(0).getText().toString()+ " : "+row.divs().get(3).getText().toString());
-                if((Objects.equals(row.divs().get(0).getText().toString(), date)) && (row.divs().get(3).getText().toString().contains("Available"))){
-                    System.out.println("Found date, applying!!!");
-                    row.divs().get(4).click();
-                    break;
+            WebElement container = wd.findElement(By.id("ctl00_ContentPlaceHolder1_pnlTestResults"));
+
+            String expr = "//*[boolean(number(substring-before(substring-after(@id, 'ctl00_ContentPlaceHolder1_rptVenue_ctl'), '_pnlHeader')))]";
+           // String expr = "//*[matches(@id, 'ctl00_ContentPlaceHolder1_rptVenue_ctl\\d+_pnlHeader')]";
+            //String expr = "//*[start-with(@id, 'ctl00_ContentPlaceHolder1_rptVenue_ctl') and end-with(@id, '_pnlHeader')]";
+            List<WebElement> headers = container.findElements(By.xpath(expr));
+            List<WebElement> townAndDates = new ArrayList<>();
+            WebElement firstHeader = container.findElement(By.id("ctl00_ContentPlaceHolder1_rptVenue_ctl00_pnlHeader"));
+            townAndDates.add(firstHeader);
+            townAndDates.addAll(headers);
+
+            for(WebElement header : townAndDates) {
+                System.out.println("header: "+header.getText());
+            }
+
+            boolean foundDate = false;
+
+            while(!foundDate) {
+                List<FluentWebElement> rows = rowsField();
+                for (FluentWebElement row : rows) {
+                    System.out.println(row.divs().get(0).getText().toString() + " : " + row.divs().get(3).getText().toString());
+                    if ((Objects.equals(row.divs().get(0).getText().toString(), date)) && (row.divs().get(3).getText().toString().contains("Available"))) {
+                        System.out.println("Found date, applying!!!");
+                        foundDate = true;
+                        row.divs().get(4).click();
+                        break;
+                    }
+                    System.out.println();
                 }
-                System.out.println();
+                if(!foundDate) try {
+                    Thread.sleep(30000);
+                    wd.navigate().refresh();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }};
+
 
         new TermsAndConditionsPage(wd){{
             agreeField().click();
