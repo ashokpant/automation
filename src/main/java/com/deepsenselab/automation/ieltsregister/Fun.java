@@ -6,10 +6,10 @@ package com.deepsenselab.automation.ieltsregister;
 public class Fun {
     public static CandidateDetails getCandidateDetails(){
         CandidateDetails details = new CandidateDetails();
-        details.setBookingCountry("India");
+        details.setBookingCountry("Nepal");
         details.setBookingDate("August 2016");
         details.setBookingExactDate("27 August 2016");
-        details.setBookingTown("Delhi");
+        details.setBookingTown("Kathmandu");
         details.setBookingModule("Academic");
 
         details.setTitle("Mr");

@@ -99,25 +99,43 @@ public class RegisterIelts {
         new CheckAvailabilityPage(wd){{
             String date = candidate.getBookingExactDate();//"27 August 2016";
             System.out.println("Booking date: "+date);
-            //System.out.println("header: "+headerField().getText());
 
-            WebElement container = wd.findElement(By.id("ctl00_ContentPlaceHolder1_pnlTestResults"));
-
-            String expr = "//*[boolean(number(substring-before(substring-after(@id, 'ctl00_ContentPlaceHolder1_rptVenue_ctl'), '_pnlHeader')))]";
-           // String expr = "//*[matches(@id, 'ctl00_ContentPlaceHolder1_rptVenue_ctl\\d+_pnlHeader')]";
-            //String expr = "//*[start-with(@id, 'ctl00_ContentPlaceHolder1_rptVenue_ctl') and end-with(@id, '_pnlHeader')]";
-            List<WebElement> headers = container.findElements(By.xpath(expr));
-            List<WebElement> townAndDates = new ArrayList<>();
-            WebElement firstHeader = container.findElement(By.id("ctl00_ContentPlaceHolder1_rptVenue_ctl00_pnlHeader"));
-            townAndDates.add(firstHeader);
-            townAndDates.addAll(headers);
-
-            for(WebElement header : townAndDates) {
-                System.out.println("header: "+header.getText());
+            List<Availability> availabilities = getAvailability();
+            for(Availability availability : availabilities) {
+                System.out.println("header: "+availability.getTown().getText());
+                for(AvailabilityDetail detail : availability.getDateDetails()) {
+                    System.out.println(detail.getDate().getText()+" - "+ detail.getFee().getText()+" - "+detail.getAvailability().getText()+" - "+ detail.getStatus().getText());
+                }
             }
 
             boolean foundDate = false;
+            while(!foundDate) {
+                for (Availability availability : availabilities) {
+                    System.out.println("Town: "+availability.getTown().getText());
+                    if(availability.getTown().getText().toLowerCase().matches(candidate.getBookingTown().toLowerCase())){
+                        for(AvailabilityDetail detail :availability.getDateDetails()) {
+                            System.out.println(detail.getDate().getText()+" - "+ detail.getFee().getText()+" - "+detail.getAvailability().getText()+" - "+ (detail.getStatus().getText().isEmpty()?" Empty":detail.getStatus().getText()));
+                            if ((Objects.equals(detail.getDate().getText(), date)) && (detail.getAvailability().toString().contains("Available"))) {
+                                System.out.print(" <= Found date, applying!!!");
+                                foundDate = true;
+                                detail.getStatus().click();
+                                break;
+                            }
+                        }
+                    }
+                    System.out.println();
+                }
+                if(!foundDate) try {
+                    Thread.sleep(30000);
+                    wd.navigate().refresh();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
+
+
+            /*boolean foundDate = false;
             while(!foundDate) {
                 List<FluentWebElement> rows = rowsField();
                 for (FluentWebElement row : rows) {
@@ -136,7 +154,7 @@ public class RegisterIelts {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
         }};
 
 
