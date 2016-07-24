@@ -100,27 +100,30 @@ public class RegisterIelts {
             String date = candidate.getBookingExactDate();//"27 August 2016";
             System.out.println("Booking date: "+date);
 
-            List<Availability> availabilities = getAvailability();
+            /*List<Availability> availabilities = getAvailability();
             for(Availability availability : availabilities) {
                 System.out.println("header: "+availability.getTown().getText());
                 for(AvailabilityDetail detail : availability.getDateDetails()) {
                     System.out.println(detail.getDate().getText()+" - "+ detail.getFee().getText()+" - "+detail.getAvailability().getText()+" - "+ detail.getStatus().getText());
                 }
-            }
+            }*/
 
             boolean foundDate = false;
             while(!foundDate) {
+                List<Availability> availabilities = getAvailability();
                 for (Availability availability : availabilities) {
                     System.out.println("Town: "+availability.getTown().getText());
-                    if(availability.getTown().getText().toLowerCase().matches(candidate.getBookingTown().toLowerCase())){
+                    if(availability.getTown().findElement(By.className("searchCriteriaBoxCriteriaValue")).getText().toLowerCase().contains(candidate.getBookingTown().toLowerCase())){
                         for(AvailabilityDetail detail :availability.getDateDetails()) {
-                            System.out.println(detail.getDate().getText()+" - "+ detail.getFee().getText()+" - "+detail.getAvailability().getText()+" - "+ (detail.getStatus().getText().isEmpty()?" Empty":detail.getStatus().getText()));
-                            if ((Objects.equals(detail.getDate().getText(), date)) && (detail.getAvailability().toString().contains("Available"))) {
+
+                            System.out.print(detail.getDate().getText()+" - "+ detail.getFee().getText()+" - "+detail.getAvailability().getText());
+                            if ((Objects.equals(detail.getDate().getText(), date)) && (detail.getAvailability().getText().contains("Available"))) {
                                 System.out.print(" <= Found date, applying!!!");
                                 foundDate = true;
                                 detail.getStatus().click();
                                 break;
                             }
+                            System.out.println();
                         }
                     }
                     System.out.println();
