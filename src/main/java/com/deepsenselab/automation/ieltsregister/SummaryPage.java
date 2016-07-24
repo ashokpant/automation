@@ -10,7 +10,7 @@ import static org.openqa.selenium.By.id;
 public class SummaryPage extends BasePage {
     public SummaryPage(WebDriver delegate) {
         super(delegate);
-        url().within(Period.secs(2)).shouldContain("Confirmation");
+        url().within(Period.secs(10)).shouldContain("Confirmation");
     }
 
     protected FluentWebElement paymentMethodField(){return select(id("ddlPaymentMethod"));}

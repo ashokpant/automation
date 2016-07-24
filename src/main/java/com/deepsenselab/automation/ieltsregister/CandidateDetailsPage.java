@@ -14,7 +14,7 @@ import static org.openqa.selenium.By.id;
 public class CandidateDetailsPage extends BasePage {
     public CandidateDetailsPage(WebDriver delegate) {
         super(delegate);
-        url().within(Period.secs(2)).shouldContain("CandidateDetails");
+        url().within(Period.secs(10)).shouldContain("CandidateDetails");
     }
     protected FluentWebElement titleField(){
         return select(id("ctl00_ContentPlaceHolder1_ddlTitle"));

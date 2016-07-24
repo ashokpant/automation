@@ -19,7 +19,7 @@ public class RegisterIeltsParallel implements Runnable {
 
     public static void main(String[] args) {
         String excelFilePath = "/home/ashok/Projects/ashok/automation/automation/data/candidates.xlsx";
-        int numOfThreads = 3;
+        int numOfThreads = 5;
 
         try {
             IO reader = new IO();

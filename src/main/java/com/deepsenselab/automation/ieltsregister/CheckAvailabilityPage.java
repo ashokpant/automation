@@ -16,7 +16,7 @@ import static org.openqa.selenium.By.id;
 public class CheckAvailabilityPage extends BasePage {
     public CheckAvailabilityPage(WebDriver delegate) {
         super(delegate);
-        url().within(Period.secs(3)).shouldContain("CheckAvailability");
+        url().within(Period.secs(10)).shouldContain("CheckAvailability");
     }
 
     protected FluentWebElement dateField(){

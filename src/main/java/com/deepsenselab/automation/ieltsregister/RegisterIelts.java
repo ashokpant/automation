@@ -3,12 +3,9 @@ package com.deepsenselab.automation.ieltsregister;
 import org.monte.screenrecorder.ScreenRecorder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.seleniumhq.selenium.fluent.FluentWebElement;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -115,7 +112,6 @@ public class RegisterIelts {
                     System.out.println("Town: "+availability.getTown().getText());
                     if(availability.getTown().findElement(By.className("searchCriteriaBoxCriteriaValue")).getText().toLowerCase().contains(candidate.getBookingTown().toLowerCase())){
                         for(AvailabilityDetail detail :availability.getDateDetails()) {
-
                             System.out.print(detail.getDate().getText()+" - "+ detail.getFee().getText()+" - "+detail.getAvailability().getText());
                             if ((Objects.equals(detail.getDate().getText(), date)) && (detail.getAvailability().getText().contains("Available"))) {
                                 System.out.print(" <= Found date, applying!!!");
@@ -127,6 +123,7 @@ public class RegisterIelts {
                         }
                     }
                     System.out.println();
+                    if(foundDate) break;
                 }
                 if(!foundDate) try {
                     Thread.sleep(30000);
