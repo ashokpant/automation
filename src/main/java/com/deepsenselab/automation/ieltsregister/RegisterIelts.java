@@ -224,9 +224,10 @@ public class RegisterIelts {
             for(int i = 1; i <candidates.size(); ++i){
                 CandidateDetails candidate = candidates.get(i);
                 registerIelts.register(candidate);
+                Thread.sleep(60000);
             }
 
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }

@@ -16,7 +16,7 @@ import static org.openqa.selenium.By.id;
 public class CheckAvailabilityPage extends BasePage {
     public CheckAvailabilityPage(WebDriver delegate) {
         super(delegate);
-        url().within(Period.secs(10)).shouldContain("CheckAvailability");
+        url().within(Period.secs(60)).shouldContain("CheckAvailability");
     }
 
     protected FluentWebElement dateField(){
@@ -48,9 +48,11 @@ public class CheckAvailabilityPage extends BasePage {
 
         List<WebElement> townAndDates = new ArrayList<>();
         WebElement container = delegate.findElement(By.id("ctl00_ContentPlaceHolder1_pnlTestResults"));
-        WebElement firstHeader = container.findElement(By.id("ctl00_ContentPlaceHolder1_rptVenue_ctl00_pnlHeader"));
-        // WebElement table = firstHeader.findElement(By.xpath("following-sibling::div"));
-        townAndDates.add(firstHeader);
+         if(isElementPresent(container,By.id("ctl00_ContentPlaceHolder1_rptVenue_ctl00_pnlHeader"))){
+             WebElement firstHeader = container.findElement(By.id("ctl00_ContentPlaceHolder1_rptVenue_ctl00_pnlHeader"));
+             townAndDates.add(firstHeader);
+         }
+
         String expr = "//*[boolean(number(substring-before(substring-after(@id, 'ctl00_ContentPlaceHolder1_rptVenue_ctl'), '_pnlHeader')))]";
         List<WebElement> headers = container.findElements(By.xpath(expr));
         townAndDates.addAll(headers);

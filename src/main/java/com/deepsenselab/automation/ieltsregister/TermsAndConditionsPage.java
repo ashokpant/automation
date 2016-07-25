@@ -10,7 +10,7 @@ import static org.openqa.selenium.By.id;
 public class TermsAndConditionsPage extends BasePage {
     public TermsAndConditionsPage(WebDriver delegate) {
         super(delegate);
-        url().within(Period.secs(5)).shouldContain("TermsConditions");
+        url().within(Period.secs(60)).shouldContain("TermsConditions");
     }
 
     protected FluentWebElement agreeField(){

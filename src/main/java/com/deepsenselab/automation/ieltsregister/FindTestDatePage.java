@@ -10,7 +10,7 @@ import static org.openqa.selenium.By.id;
 public class FindTestDatePage extends BasePage {
     public FindTestDatePage(WebDriver delegate) {
         super(delegate);
-        url().within(Period.secs(10)).shouldContain("CountryExamSearch");
+        url().within(Period.secs(60)).shouldContain("CountryExamSearch");
     }
 
     protected FluentWebElement dateField(){return select(id("ctl00_ContentPlaceHolder1_ddlDateMonthYear"));}
