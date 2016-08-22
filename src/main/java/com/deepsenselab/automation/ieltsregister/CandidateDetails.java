@@ -4,18 +4,18 @@ package com.deepsenselab.automation.ieltsregister;
  * Created by Ashok K. Pant (ashokpant87@gmail.com) on 7/20/16.
  */
 public class CandidateDetails {
-    private  String bookingCountry;
-    private  String bookingDate;
-    private  String bookingExactDate;
-    private  String bookingTown;
-    private  String bookingModule;
+    private String bookingCountry;
+    private String bookingDate;
+    private String bookingExactDate;
+    private String bookingTown;
+    private String bookingModule;
     private String title;
     private String firstName;
     private String lastName;
     private String firstLanguage;
     private String nationality;
     private String email;
-    private String  birthDay;
+    private String birthDay;
     private String birthMonth;
     private String birthYear;
     private String identificationDoc;
@@ -257,38 +257,38 @@ public class CandidateDetails {
         this.englishStudyYears = englishStudyYears;
     }
 
-    public String toString(String sep){
-        return "[bookingCountry: " +this.bookingCountry+sep+
-                "bookingDate: " +this.bookingDate+sep+
-                "bookingExactDate: " +this.bookingExactDate+sep+
-                "bookingTown: " +this.bookingTown+sep+
-                "bookingModule: " +this.bookingModule+sep+
-                "title: " +this.title+sep+
-                "firstName: " +this.firstName+sep+
-                "lastName: " +this.lastName+sep+
-                "firstLanguage: " +this.firstLanguage+sep+
-                "nationality: " +this.nationality+sep+
-                "email: " +this.email+sep+
-                "birthDay: " +this.birthDay+sep+
-                "birthMonth: " +this.birthMonth+sep+
-                "birthYear: " +this.birthYear+sep+
-                "identificationDoc: " +this.identificationDoc+sep+
-                "identificationDocNumber: " +this.identificationDocNumber+sep+
-                "identificationDocExpiryDay: " +this.identificationDocExpiryDay+sep+
-                "identificationDocExpiryMonth: " +this.identificationDocExpiryMonth+sep+
-                "identificationDocExpiryYear: " +this.identificationDocExpiryYear+sep+
-                "gender: " +this.gender+sep+
-                "address: " +this.address+sep+
-                "country: " +this.country+sep+
-                "occupationSector: " +this.occupationSector+sep+
-                "occupationStatus: " +this.occupationStatus+sep+
-                "reasonForTest: " +this.reasonForTest+sep+
-                "destinationCountry: " +this.destinationCountry+sep+
-                "educationLabel: " +this.educationLabel+sep+
-                "englishStudyYears: "+this.englishStudyYears+"]";
+    public String toString(String sep) {
+        return "[bookingCountry: " + this.bookingCountry + sep +
+                "bookingDate: " + this.bookingDate + sep +
+                "bookingExactDate: " + this.bookingExactDate + sep +
+                "bookingTown: " + this.bookingTown + sep +
+                "bookingModule: " + this.bookingModule + sep +
+                "title: " + this.title + sep +
+                "firstName: " + this.firstName + sep +
+                "lastName: " + this.lastName + sep +
+                "firstLanguage: " + this.firstLanguage + sep +
+                "nationality: " + this.nationality + sep +
+                "email: " + this.email + sep +
+                "birthDay: " + this.birthDay + sep +
+                "birthMonth: " + this.birthMonth + sep +
+                "birthYear: " + this.birthYear + sep +
+                "identificationDoc: " + this.identificationDoc + sep +
+                "identificationDocNumber: " + this.identificationDocNumber + sep +
+                "identificationDocExpiryDay: " + this.identificationDocExpiryDay + sep +
+                "identificationDocExpiryMonth: " + this.identificationDocExpiryMonth + sep +
+                "identificationDocExpiryYear: " + this.identificationDocExpiryYear + sep +
+                "gender: " + this.gender + sep +
+                "address: " + this.address + sep +
+                "country: " + this.country + sep +
+                "occupationSector: " + this.occupationSector + sep +
+                "occupationStatus: " + this.occupationStatus + sep +
+                "reasonForTest: " + this.reasonForTest + sep +
+                "destinationCountry: " + this.destinationCountry + sep +
+                "educationLabel: " + this.educationLabel + sep +
+                "englishStudyYears: " + this.englishStudyYears + "]";
     }
 
-    public String toString(){
+    public String toString() {
         String sep = ", ";
         return toString(sep);
     }

@@ -13,10 +13,11 @@ public class TermsAndConditionsPage extends BasePage {
         url().within(Period.secs(60)).shouldContain("TermsConditions");
     }
 
-    protected FluentWebElement agreeField(){
+    protected FluentWebElement agreeField() {
         return element(id("ctl00_ContentPlaceHolder1_chkAccept"));
     }
-    protected FluentWebElement continueField(){
+
+    protected FluentWebElement continueField() {
         return element(id("ctl00_ContentPlaceHolder1_imgbContinue"));
     }
 }

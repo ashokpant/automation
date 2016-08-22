@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentWebElement;
 import org.seleniumhq.selenium.fluent.Period;
-import sun.security.x509.AVA;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,51 +18,63 @@ public class CheckAvailabilityPage extends BasePage {
         url().within(Period.secs(60)).shouldContain("CheckAvailability");
     }
 
-    protected FluentWebElement dateField(){
+    protected FluentWebElement dateField() {
         return select(id("ctl00_ContentPlaceHolder1_ddlDateMonthYear"));
     }
-    protected FluentWebElement townField(){
+
+    protected FluentWebElement townField() {
         return select(id("ctl00_ContentPlaceHolder1_ddlTownCityVenue"));
     }
-    protected FluentWebElement moduleField(){
+
+    protected FluentWebElement moduleField() {
         return select(id("ctl00_ContentPlaceHolder1_ddlModule"));
     }
-    protected FluentWebElement findAgainField(){
+
+    protected FluentWebElement findAgainField() {
         return element(id("ctl00_ContentPlaceHolder1_imgbSearchAgain"));
     }
-    protected FluentWebElement availabilityRootField(){
+
+    protected FluentWebElement availabilityRootField() {
         return element(id("ctl00_ContentPlaceHolder1_pnlTestResults"));
     }
 
-    protected FluentWebElement selectedTownValueField(){
+    protected FluentWebElement selectedTownValueField() {
         return element(id("searchCriteriaBoxCriteriaValue"));
     }
 
-    protected FluentWebElement headerField() {return element(By.id("ctl00_ContentPlaceHolder1_rptVenue_ctl00_pnlHeader"));}
-    protected FluentWebElement tableField(){ return element(By.className("pnlBodyDetailRowBoxOuter"));}
-    protected List<FluentWebElement> rowsField() {return tableField().elements(By.className("pnlBodyDetailRowBox"));}
+    protected FluentWebElement headerField() {
+        return element(By.id("ctl00_ContentPlaceHolder1_rptVenue_ctl00_pnlHeader"));
+    }
 
-    protected List<Availability> getAvailability(){
+    protected FluentWebElement tableField() {
+        return element(By.className("pnlBodyDetailRowBoxOuter"));
+    }
+
+    protected List<FluentWebElement> rowsField() {
+        return tableField().elements(By.className("pnlBodyDetailRowBox"));
+    }
+
+    protected List<Availability> getAvailability() {
         List<Availability> availabilities = new ArrayList<>();
 
         List<WebElement> townAndDates = new ArrayList<>();
         WebElement container = delegate.findElement(By.id("ctl00_ContentPlaceHolder1_pnlTestResults"));
-         if(isElementPresent(container,By.id("ctl00_ContentPlaceHolder1_rptVenue_ctl00_pnlHeader"))){
-             WebElement firstHeader = container.findElement(By.id("ctl00_ContentPlaceHolder1_rptVenue_ctl00_pnlHeader"));
-             townAndDates.add(firstHeader);
-         }
+        if (isElementPresent(container, By.id("ctl00_ContentPlaceHolder1_rptVenue_ctl00_pnlHeader"))) {
+            WebElement firstHeader = container.findElement(By.id("ctl00_ContentPlaceHolder1_rptVenue_ctl00_pnlHeader"));
+            townAndDates.add(firstHeader);
+        }
 
         String expr = "//*[boolean(number(substring-before(substring-after(@id, 'ctl00_ContentPlaceHolder1_rptVenue_ctl'), '_pnlHeader')))]";
         List<WebElement> headers = container.findElements(By.xpath(expr));
         townAndDates.addAll(headers);
 
-        for(WebElement header : townAndDates) {
+        for (WebElement header : townAndDates) {
             Availability availability = new Availability();
             availability.setTown(header);
             //System.out.println("header: "+header.getText());
             List<AvailabilityDetail> availabilityDetails = new ArrayList<>();
             WebElement rowContainer = header.findElement(By.xpath("following-sibling::div"));
-            for(WebElement row : rowContainer.findElements(By.className("pnlBodyDetailRowBox"))) {
+            for (WebElement row : rowContainer.findElements(By.className("pnlBodyDetailRowBox"))) {
                 List<WebElement> elements = row.findElements(By.className("pnlBodyDetailRowBoxLeft"));
                 WebElement apply = row.findElement(By.className("pnlBodyDetailRowBoxRight"));
 
@@ -74,7 +85,7 @@ public class CheckAvailabilityPage extends BasePage {
                 dateDetail.setAvailability(elements.get(3));
                 dateDetail.setStatus(apply);
                 //System.out.println(elements.get(0).getText() + " : " +elements.get(1).getText() + " : "+elements.get(2).getText() + " : "+ elements.get(3).getText()+" = "+apply.getText());
-            availabilityDetails.add(dateDetail);
+                availabilityDetails.add(dateDetail);
             }
             availability.setDateDetails(availabilityDetails);
             availabilities.add(availability);
@@ -82,7 +93,7 @@ public class CheckAvailabilityPage extends BasePage {
         return availabilities;
     }
 
-    class Availability{
+    class Availability {
         WebElement town;
         List<AvailabilityDetail> dateDetails;
 
@@ -102,7 +113,8 @@ public class CheckAvailabilityPage extends BasePage {
             this.dateDetails = dateDetails;
         }
     }
-    class AvailabilityDetail{
+
+    class AvailabilityDetail {
         WebElement date;
         WebElement module;
         WebElement fee;

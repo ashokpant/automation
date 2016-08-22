@@ -4,7 +4,7 @@ package com.deepsenselab.automation.ieltsregister;
  * Created by Ashok K. Pant (ashokpant87@gmail.com) on 7/20/16.
  */
 public class Fun {
-    public static CandidateDetails getCandidateDetails(){
+    public static CandidateDetails getCandidateDetails() {
         CandidateDetails details = new CandidateDetails();
         details.setBookingCountry("India");
         details.setBookingDate("August 2016");

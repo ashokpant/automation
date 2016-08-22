@@ -13,8 +13,11 @@ public class SummaryPage extends BasePage {
         url().within(Period.secs(60)).shouldContain("Confirmation");
     }
 
-    protected FluentWebElement paymentMethodField(){return select(id("ddlPaymentMethod"));}
-    protected FluentWebElement applyNowField(){
+    protected FluentWebElement paymentMethodField() {
+        return select(id("ddlPaymentMethod"));
+    }
+
+    protected FluentWebElement applyNowField() {
         return element(id("ctl00_ContentPlaceHolder1_ibtnBookNow"));
     }
 }

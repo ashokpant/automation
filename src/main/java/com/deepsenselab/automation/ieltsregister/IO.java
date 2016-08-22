@@ -1,6 +1,5 @@
 package com.deepsenselab.automation.ieltsregister;
 
-import org.apache.poi.hssf.record.chart.ObjectLinkRecord;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -26,16 +25,15 @@ public class IO {
                 value = cell.getStringCellValue();
                 break;
             case Cell.CELL_TYPE_BOOLEAN:
-                value =  cell.getBooleanCellValue();
+                value = cell.getBooleanCellValue();
                 break;
             case Cell.CELL_TYPE_NUMERIC:
                 value = cell.getNumericCellValue();
                 break;
         }
-        if(value != null){
+        if (value != null) {
             return value;
-        }
-        else
+        } else
             return null;
     }
 
@@ -70,90 +68,91 @@ public class IO {
                     case col:
                         aCandidate.setBookingCountry((String) getCellValue(nextCell));
                         break;
-                    case col+1:
+                    case col + 1:
                         aCandidate.setBookingDate((String) getCellValue(nextCell));
                         break;
-                    case col+2:
+                    case col + 2:
                         aCandidate.setBookingExactDate((String) getCellValue(nextCell));
                         break;
-                    case col+3:
+                    case col + 3:
                         aCandidate.setBookingTown((String) getCellValue(nextCell));
                         break;
-                    case col+4:
+                    case col + 4:
                         aCandidate.setBookingModule((String) getCellValue(nextCell));
                         break;
-                    case col+5:
+                    case col + 5:
                         aCandidate.setTitle((String) getCellValue(nextCell));
                         break;
-                    case col+6:
+                    case col + 6:
                         aCandidate.setFirstName((String) getCellValue(nextCell));
                         break;
-                    case col+7:
+                    case col + 7:
                         aCandidate.setLastName((String) getCellValue(nextCell));
                         break;
-                    case col+8:
+                    case col + 8:
                         aCandidate.setFirstLanguage((String) getCellValue(nextCell));
                         break;
-                    case col+9:
+                    case col + 9:
                         aCandidate.setNationality((String) getCellValue(nextCell));
                         break;
-                    case col+10:
+                    case col + 10:
                         aCandidate.setEmail((String) getCellValue(nextCell));
                         break;
-                    case col+11:
+                    case col + 11:
                         aCandidate.setBirthDay((String) getCellValue(nextCell));
                         break;
-                    case col+12:
+                    case col + 12:
                         aCandidate.setBirthMonth((String) getCellValue(nextCell));
                         break;
-                    case col+13:
+                    case col + 13:
                         aCandidate.setBirthYear((String) getCellValue(nextCell));
                         break;
-                    case col+14:
+                    case col + 14:
                         aCandidate.setIdentificationDoc((String) getCellValue(nextCell));
                         break;
-                    case col+15:
+                    case col + 15:
                         aCandidate.setIdentificationDocNumber((String) getCellValue(nextCell));
                         break;
-                    case col+16:
+                    case col + 16:
                         aCandidate.setIdentificationDocExpiryDay((String) getCellValue(nextCell));
                         break;
-                    case col+17:
+                    case col + 17:
                         aCandidate.setIdentificationDocExpiryMonth((String) getCellValue(nextCell));
                         break;
-                    case col+18:
+                    case col + 18:
                         aCandidate.setIdentificationDocExpiryYear((String) getCellValue(nextCell));
                         break;
-                    case col+19:
+                    case col + 19:
                         aCandidate.setGender((String) getCellValue(nextCell));
                         break;
-                    case col+20:
+                    case col + 20:
                         aCandidate.setAddress((String) getCellValue(nextCell));
                         break;
-                    case col+21:
+                    case col + 21:
                         aCandidate.setCountry((String) getCellValue(nextCell));
                         break;
-                    case col+22:
+                    case col + 22:
                         aCandidate.setOccupationSector((String) getCellValue(nextCell));
                         break;
-                    case col+23:
+                    case col + 23:
                         aCandidate.setOccupationStatus((String) getCellValue(nextCell));
                         break;
-                    case col+24:
+                    case col + 24:
                         aCandidate.setReasonForTest((String) getCellValue(nextCell));
                         break;
-                    case col+25:
+                    case col + 25:
                         aCandidate.setDestinationCountry((String) getCellValue(nextCell));
                         break;
-                    case col+26:
+                    case col + 26:
                         aCandidate.setEducationLabel((String) getCellValue(nextCell));
                         break;
-                    case col+27:
+                    case col + 27:
                         aCandidate.setEnglishStudyYears((String) getCellValue(nextCell));
                         break;
                 }
             }
-            listCandidates.add(aCandidate);
+            if (aCandidate.getIdentificationDocNumber() != null && !aCandidate.getIdentificationDocNumber().isEmpty())
+                listCandidates.add(aCandidate);
         }
         workbook.close();
         inputStream.close();
@@ -166,7 +165,7 @@ public class IO {
         IO reader = new IO();
         List<CandidateDetails> listCandidates = reader.readCandidateDetailsFromExcelFile(excelFilePath);
 
-        for(CandidateDetails candidateDetail:listCandidates) {
+        for (CandidateDetails candidateDetail : listCandidates) {
             System.out.println(candidateDetail.toString(", "));
             System.out.println();
         }
