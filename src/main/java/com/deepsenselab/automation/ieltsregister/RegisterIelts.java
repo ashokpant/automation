@@ -19,25 +19,28 @@ public class RegisterIelts implements Runnable {
     }
 
     public static void main(String[] args) {
-        String excelFilePath; //=  "/home/ashok/Projects/ashok/automation/automation/data/candidates_sept.xlsx";
+        boolean production = true;
+        String excelFilePath;
         int numOfThreads = 3;
         int sleepSecs = 60;
 
-       /* if (args.length == 3) {
-            excelFilePath = args[0];
-            numOfThreads = Integer.parseInt(args[1]);
-            sleepSecs = Integer.parseInt(args[2]);
-        } else if (args.length == 2) {
-            excelFilePath = args[0];
-            numOfThreads = Integer.parseInt(args[1]);
-        } else if (args.length == 1) {
-            excelFilePath = args[0];
-        } else {
-            System.out.println("Input the candidate list excel file.");
-            return;
-        }*/
-        excelFilePath = "/home/ashok/Projects/ashok/automation/automation/data/candidates_sept.xlsx";
-
+        if(production) {
+            if (args.length == 3) {
+                excelFilePath = args[0];
+                numOfThreads = Integer.parseInt(args[1]);
+                sleepSecs = Integer.parseInt(args[2]);
+            } else if (args.length == 2) {
+                excelFilePath = args[0];
+                numOfThreads = Integer.parseInt(args[1]);
+            } else if (args.length == 1) {
+                excelFilePath = args[0];
+            } else {
+                System.out.println("Input the candidate list excel file.");
+                return;
+            }
+        }else {
+            excelFilePath = "/home/ashok/Projects/ashok/automation/automation/data/candidates_sept.xlsx";
+        }
 
         try {
             IO reader = new IO();
