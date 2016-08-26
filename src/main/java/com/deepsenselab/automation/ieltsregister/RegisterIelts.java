@@ -19,10 +19,10 @@ public class RegisterIelts implements Runnable {
     }
 
     public static void main(String[] args) {
-        boolean production = true;
+        boolean production = false;
         String excelFilePath;
         int numOfThreads = 3;
-        int sleepSecs = 60;
+        int sleepSecs = 120;
 
         if(production) {
             if (args.length == 3) {
@@ -39,7 +39,7 @@ public class RegisterIelts implements Runnable {
                 return;
             }
         }else {
-            excelFilePath = "/home/ashok/Projects/ashok/automation/automation/data/candidates_sept.xlsx";
+            excelFilePath = "/home/ashok/Projects/ashok/automation/automation/data/candidates_oct.xlsx";
         }
 
         try {
