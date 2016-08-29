@@ -9,14 +9,7 @@ public class RegisterIelts implements Runnable {
     public RegisterIelts(CandidateDetails candidate) {
         this.candidate = candidate;
     }
-
-    @Override
-    public void run() {
-        RegisterIeltsCore registerIelts = new RegisterIeltsCore();
-        System.out.println("Candidate in run: " + this.candidate.toString(", "));
-        registerIelts.registerCore(candidate);
-        registerIelts.killWebDriver();
-    }
+    public RegisterIelts(){}
 
     public static void main(String[] args) {
         boolean production = false;
@@ -42,9 +35,27 @@ public class RegisterIelts implements Runnable {
             excelFilePath = "/home/ashok/Projects/ashok/automation/automation/data/candidates_oct.xlsx";
         }
 
+        RegisterIelts registerIelts = new RegisterIelts();
+        String msg = registerIelts.register(excelFilePath,numOfThreads,sleepSecs);
+        if(msg == null){
+            System.out.println("Done.");
+        }else{
+            System.out.println(msg);
+        }
+    }
+
+    @Override
+    public void run() {
+        RegisterIeltsCore registerIelts = new RegisterIeltsCore();
+        System.out.println("Candidate in run: " + this.candidate.toString(", "));
+        registerIelts.registerCore(candidate);
+        registerIelts.killWebDriver();
+    }
+
+    public String register(String filePath, int numOfThreads, int sleepSecs) {
         try {
             IO reader = new IO();
-            List<CandidateDetails> candidates = reader.readCandidateDetailsFromExcelFile(excelFilePath);
+            List<CandidateDetails> candidates = reader.readCandidateDetailsFromExcelFile(filePath);
 
             for (int i = 1; i < candidates.size(); i = i + numOfThreads) {
                 for (int j = i; j < Math.min(i + numOfThreads, candidates.size()); ++j) {
@@ -60,6 +71,8 @@ public class RegisterIelts implements Runnable {
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+            return e.toString();
         }
+        return null;
     }
 }
