@@ -14,11 +14,11 @@ public class RegisterIeltsCore {
     double time = 0;
 
     public void makeWebDriverAndGotoSite() {
-       if(System.getProperty("os.name").startsWith("Linux")){
-        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
-       }else{
-           System.setProperty("webdriver.chrome.driver", "C://chromedriver.exe");
-       }
+        if (System.getProperty("os.name").startsWith("Linux")) {
+            System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
+        } else {
+            System.setProperty("webdriver.chrome.driver", "C://chromedriver.exe");
+        }
 
         /*HashMap<String, Object> prefs = new HashMap<String, Object>();
         prefs.put("profile.managed_default_content_settings.images", 1);

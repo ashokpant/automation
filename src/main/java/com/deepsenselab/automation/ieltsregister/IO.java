@@ -37,7 +37,7 @@ public class IO {
             return null;
     }
 
-    public List<CandidateDetails> readCandidateDetailsFromExcelFile(String excelFilePath) throws IOException {
+    public List<CandidateDetails> readCandidateDetailsFromExcelFile(String excelFilePath) throws IOException, IllegalArgumentException {
         List<CandidateDetails> listCandidates = new ArrayList<>();
         FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
 
