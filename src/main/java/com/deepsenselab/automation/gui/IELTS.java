@@ -1,7 +1,7 @@
 package com.deepsenselab.automation.gui;
 
+import com.deepsenselab.automation.RegisterIelts;
 import com.deepsenselab.automation.ieltsregister.CandidateDetails;
-import com.deepsenselab.automation.ieltsregister.RegisterIelts;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -29,9 +29,6 @@ public class IELTS {
     private RegisterIelts registerIelts;
 
     public IELTS() {
-//        browseBtn = new JButton();
-//        registerBtn = new JButton();
-//        ieltsView = new JPanel();
         browseBtn.addActionListener(new BrowseBtnClicked());
         registerBtn.addActionListener(new RegisterBtnClicked());
         registerIelts = new RegisterIelts();
@@ -66,7 +63,7 @@ public class IELTS {
         return false;
     }
 
-      private class BrowseBtnClicked implements ActionListener {
+    private class BrowseBtnClicked implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             JFileChooser fileChooser = new JFileChooser();
@@ -81,24 +78,22 @@ public class IELTS {
                 List<CandidateDetails> candidates = null;
                 if (!filePath.isEmpty()) {
                     try {
-                    candidates = registerIelts.read(filePath);
+                        candidates = registerIelts.read(filePath);
                     } catch (Exception e1) {
-                        msgLbl.setText( e1.toString());
+                        msgLbl.setText(e1.toString());
                     }
                 }
-                if(candidates!= null){
+                if (candidates != null) {
                     int i = 1;
-                    for(CandidateDetails details:candidates){
+                    for (CandidateDetails details : candidates) {
                         Vector<String> row = new Vector<>();
-                        row.add(i+"");
-                        row.add(details.getFirstName()+" "+details.getLastName());
+                        row.add(i + "");
+                        row.add(details.getFirstName() + " " + details.getLastName());
                         row.add("Register/Cancle");
                         detailTblModel.addRow(row);
-                         i+=1;
+                        i += 1;
                     }
                 }
-
-
             }
         }
     }
